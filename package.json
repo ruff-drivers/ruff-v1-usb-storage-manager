@@ -18,7 +18,7 @@
       "test": "ruff ./test/test-helper.js"
   },
   "boards": {
-    "ruff-mbd-v1": "*"
+    "ruff-mbd-v1": "^4.1.0"
   },
   "devDependencies": {
     "eslint": "^2.11.1",
