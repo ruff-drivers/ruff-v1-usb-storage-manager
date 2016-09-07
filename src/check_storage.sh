@@ -4,16 +4,8 @@ file=$2
 device="/dev/$1"
 root="/mnt/$1"
 
-if [[ ! -e $root ]]; then
-    mkdir $root
-elif [[ ! -d $root ]]; then
-    msg='! $root is occupied by other file'
-    echo invalid > $file
-    exit 1
-fi
-
 blockinfo=$(block info | grep "$device: ")
-if [[ ! -n "blockinfo" ]]; then
+if [[ ! -n "$blockinfo" ]]; then
     msg="! block information not found"
     echo invalid > $file
     exit 1
@@ -32,12 +24,19 @@ case "$type" in
         case "$version" in
             "FAT12" | "FAT32")
                 msg="~ try to mount -t vfat $device $root"
+
+                if [[ ! -e $root ]]; then
+                    mkdir $root
+                fi
+
                 mount -t vfat -o iocharset=utf8  $device $root
                 # mount -t vfat $device $root
                 if [[ $? -eq 0 ]]; then
                     echo $blockinfo > $file
                     exit 0
                 fi
+                echo invalid > $file
+                exit 1
                 ;;
         esac
         ;;
