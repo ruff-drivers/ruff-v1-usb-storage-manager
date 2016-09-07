@@ -15,7 +15,7 @@
   "scripts": {
       "lint": "eslint *.js",
       "pretest": "npm run lint",
-      "test": "ruff ./test/test-helper.js"
+      "test": "ruff ./test/test.js"
   },
   "boards": {
     "ruff-mbd-v1": "^4.1.0"
