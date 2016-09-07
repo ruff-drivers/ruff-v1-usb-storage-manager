@@ -42,39 +42,47 @@ storageManager.on('unmount', function (storage) {
 
 #### `attach([callback])`
 
-This method is defined by the framework of usb device manager (ruff-v1-usb-manager).
+This method is defined by the framework of usb device manager.
 
-It is invoked by usb to install the UVC driver used by camera driver.
+It is invoked by usb to install the storage driver.
 
 - **callback:** No argument other than a possible error is given to the completion callback. It is optional.
 
 #### `detach([callback])`
 
-This method is defined by the framework of usb device manager (ruff-v1-usb-manager).
+This method is defined by the framework of usb device manager.
 
-It is invoked by usb to uninstall the UVC driver used by camera driver.
+It is invoked by usb to uninstall the storage driver.
 
 - **callback:** No argument other than a possible error is given to the completion callback. It is optional.
 
 #### `createDevice(devPath)`
 
-This method is defined by the framework of usb device manager (ruff-v1-usb-manager).
+This method is defined by the framework of usb device manager.
 
 It is invoked by usb when one usb device is plugged into the system.
 
-If the `devPath` does not belong to usb cameras, this method returns `null`, otherwise returns the instance of camera.
+If the `devPath` does not belong to usb storages, this method returns `null`, otherwise returns the instance of storage.
 
 - **devPath:** The mounted path of usb device in the system.
+
+#### `cleanupDevice(device)`
+
+This method is defined by the framework of usb device manager.
+
+It is invoked by usb device manager and used to do some cleanup work when one usb device is unplugged from the system.
+
+- **device:** The device object which is unplugged from the system.
 
 ### Events
 
 #### `mount`
 
-The `mount` event informs that one usb camera is plugged into the system.
+The `mount` event informs that one usb storage is plugged into the system.
 
 #### `unmount`
 
-The `unmount` event informs that one usb camera is plugged from the system.
+The `unmount` event informs that one usb storage is plugged from the system.
 
 ## Storage API References
 
@@ -115,11 +123,9 @@ Return an array that contains the partition object with the matched label.
 
 - **label:** the name, which is a `string`, of partition. The `label` cannot catain any chinese character.
 
-### `eject([callback])`
+### `eject()`
 
-Eject the storage from the system, then the storage can be unplugged from the board.
-
-- **callback:** No argument other than a possible error is given to the completion callback. It is optional.
+Eject the storage from the system, then the storage can be safely unplugged from the board.
 
 ## Contributing
 

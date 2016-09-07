@@ -5,7 +5,7 @@ var usbManager = require('usb-manager');
 var Storage = require('./storage');
 var getAvailableStorage = require('./helper').getAvailableStorage;
 
-var STORAGE_DRIVERS = ['nls_cp437', 'vfat', 'sd_mod', 'usb-storage'];
+var STORAGE_DRIVERS = ['nls_cp437', 'nls_utf8', 'vfat', 'sd_mod', 'usb-storage'];
 
 var prototype = {
     attach: function (callback) {
@@ -33,8 +33,10 @@ var prototype = {
         if (devInfo) {
             return new Storage(devInfo);
         }
-
         return null;
+    },
+    cleanupDevice: function (storage) {
+        storage.cleanup();
     }
 };
 
