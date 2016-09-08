@@ -37,7 +37,7 @@ function getBlockDevname(devPath) {
     var targetSubFolders = getMatchedFolders(
         targetxPath,
         new RegExp(targetSubFolderPrefix + '.*')
-        );
+    );
     if (targetSubFolders === null) {
         return null;
     }
@@ -66,7 +66,7 @@ function getBlockDevname(devPath) {
     var partitionFolders = getMatchedFolders(
         path.join(blockPath, blockDevInfo.disk),
         new RegExp(blockDevInfo.disk + '[0-9]+')
-        );
+    );
     blockDevInfo.partitions = partitionFolders;
     return blockDevInfo;
 }
