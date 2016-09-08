@@ -40,6 +40,10 @@ storageManager.on('unmount', function (storage) {
 
 ### Methods
 
+#### `StorageManager()`
+
+Exported by this module, it is the constructor method.
+
 #### `attach([callback])`
 
 This method is defined by the framework of usb device manager.
