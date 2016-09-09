@@ -50,8 +50,15 @@ Storage.prototype.getPartitionsByLabel = function (label) {
 };
 
 Storage.prototype.eject = function () {
+    this._updatePartionsState();
     this._unmountPartitions();
-    this._removeMountPoints(true);
+    this._removeMountPoints();
+};
+
+Storage.prototype._updatePartionsState = function () {
+    for (var i = 0; i < this._blockInfo.partitions.length; i++) {
+        this._partionsState[i].unmounted = checkPartitionUnmounted(this._blockInfo.partitions[i].path);
+    }
 };
 
 Storage.prototype._unmountPartitions = function () {
@@ -61,22 +68,14 @@ Storage.prototype._unmountPartitions = function () {
             var res = uv.exec_sync('/bin/umount', [path]);
             if (res) {
                 throw new Error('Cannot umount ' + path + ': Device or resource busy');
-            } else {
-                this._partionsState[i].unmounted = true;
             }
         }
     }
 };
 
-Storage.prototype._removeMountPoints = function (checkUnmountState) {
+Storage.prototype._removeMountPoints = function () {
     for (var i = 0; i < this._blockInfo.partitions.length; i++) {
         var path = this._blockInfo.partitions[i].path;
-        if (checkUnmountState) {
-            if (!this._partionsState[i].unmounted) {
-                throw new Error('The partition ' + path + ' is not ejected, please eject first');
-            }
-        }
-
         if (!this._partionsState[i].removed) {
             try {
                 fs.rmdirSync(path);
@@ -90,7 +89,12 @@ Storage.prototype._removeMountPoints = function (checkUnmountState) {
 };
 
 Storage.prototype.cleanup = function () {
-    this._removeMountPoints(false);
+    this.eject();
 };
+
+function checkPartitionUnmounted(mountedPath) {
+    var res = uv.exec_sync('/bin/sh', ['-c', '/bin/df | /bin/grep ' + mountedPath]);
+    return !!res;
+}
 
 module.exports = Storage;
