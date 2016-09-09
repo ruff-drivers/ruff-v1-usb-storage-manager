@@ -88,10 +88,6 @@ Storage.prototype._removeMountPoints = function () {
     }
 };
 
-Storage.prototype.cleanup = function () {
-    this.eject();
-};
-
 function checkPartitionUnmounted(mountedPath) {
     var res = uv.exec_sync('/bin/sh', ['-c', '/bin/df | /bin/grep ' + mountedPath]);
     return !!res;

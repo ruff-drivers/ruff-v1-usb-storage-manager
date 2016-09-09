@@ -36,7 +36,7 @@ var prototype = {
         return null;
     },
     cleanupDevice: function (storage) {
-        storage.cleanup();
+        storage.eject();
     }
 };
 
