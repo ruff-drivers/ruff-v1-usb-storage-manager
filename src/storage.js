@@ -22,31 +22,23 @@ Object.defineProperties(Storage.prototype, {
         get: function () {
             return this._blockInfo.partitions;
         }
-    },
-    isEjected: {
-        get: function () {
-            var res = true;
-            for (var i = 0; i < this._blockInfo.partitions.length; i++) {
-                res = res && this._partionsState[i].removed;
-            }
-            return res;
-        }
     }
 });
+
+Storage.prototype.isEjected = function () {
+    return !this._partionsState.some(function (state) {
+        return state === false;
+    });
+};
 
 Storage.prototype.getPartitionsByLabel = function (label) {
     if (!label) {
         return [];
     }
-    var partitions = [];
-    var keyOfPartitions = Object.keys(this._blockInfo.partitions);
-    for (var i = 0; i < keyOfPartitions.length; i++) {
-        var current = this._blockInfo.partitions[keyOfPartitions[i]];
-        if (current.label === label) {
-            partitions.push(current);
-        }
-    }
-    return partitions;
+
+    return this._blockInfo.partitions.filter(function (partition) {
+        return partition.label === label;
+    });
 };
 
 Storage.prototype.eject = function () {
