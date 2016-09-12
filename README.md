@@ -1,6 +1,6 @@
 # USB Storage Manager for Ruff
 
-This package manager all of the block storage with USB interfae.
+This package manages all of the block storage with USB interfae.
 
 This package has two parts: one is the storage manager and the other is the driver of storage.
 
@@ -15,6 +15,7 @@ The driver of storage supplies some specific functions.
 ## Installing
 
 Execute following command to install.
+
 ```shell
 rap install ruff-v1-usb-storage-manager
 ```
@@ -29,10 +30,30 @@ var storageManager = new StorageManager();
 $('#usb').install(storageManager);
 storageManager.on('mount', function (storage) {
     // storage is mounted
+
+    // get the disk and partitions information
+    console.log('The disk information is', storage.disk);
+    console.log('The partitions information is', storage.partitions);
+
+    // get the mounted path of partition with label 'data'
+    var dataPath = storage.getPartitionsByLabel('data')[0].path;
+
+    // read something from `dataPath` or write something to `dataPath`
+    // invoke some `fs` APIs
+
+    // eject the storage from the system before unplugging the storage
+    storage.eject();
+
+    // check whether the storage is successfully ejected
+    console.log(storage.isEjected());
+
 });
 
 storageManager.on('unmount', function (storage) {
     // storage is unmounted
+
+    // check whether the storage is ejected
+    console.log(storage.isEjected());
 });
 ```
 
@@ -43,40 +64,6 @@ storageManager.on('unmount', function (storage) {
 #### `StorageManager()`
 
 Exported by this module, it is the constructor method.
-
-#### `attach([callback])`
-
-This method is defined by the framework of usb device manager.
-
-It is invoked by usb to install the storage driver.
-
-- **callback:** No argument other than a possible error is given to the completion callback. It is optional.
-
-#### `detach([callback])`
-
-This method is defined by the framework of usb device manager.
-
-It is invoked by usb to uninstall the storage driver.
-
-- **callback:** No argument other than a possible error is given to the completion callback. It is optional.
-
-#### `createDevice(devPath)`
-
-This method is defined by the framework of usb device manager.
-
-It is invoked by usb when one usb device is plugged into the system.
-
-If the `devPath` does not belong to usb storages, this method returns `null`, otherwise returns the instance of storage.
-
-- **devPath:** The mounted path of usb device in the system.
-
-#### `cleanupDevice(device)`
-
-This method is defined by the framework of usb device manager.
-
-It is invoked by usb device manager and used to do some cleanup work when one usb device is unplugged from the system.
-
-- **device:** The device object which is unplugged from the system.
 
 ### Events
 
@@ -125,11 +112,15 @@ The partitions information, ex.
 
 Return an array that contains the partition object with the matched label.
 
-- **label:** the name, which is a `string`, of partition. The `label` cannot catain any chinese character.
+- **label:** the name, which is a `string`, of partition. The `label` cannot catain any Chinese character.
 
 ### `eject()`
 
 Eject the storage from the system, then the storage can be safely unplugged from the board.
+
+### `isEjected()`
+
+Return `true` if all of the partitions of the storage are successfully ejected; otherwise, return `false`.
 
 ## Contributing
 
