@@ -1,8 +1,11 @@
+/*!
+ * Copyright (c) 2016 Nanchao Inc.
+ * All rights reserved.
+ */
+
 'use strict';
 
 var assert = require('assert');
-var fs = require('fs');
-var path = require('path');
 
 var Storage = require('../src/storage');
 
