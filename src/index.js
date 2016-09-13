@@ -12,7 +12,7 @@ var getAvailableStorage = require('./helper').getAvailableStorage;
 
 var STORAGE_DRIVERS = ['nls_cp437', 'nls_utf8', 'vfat', 'sd_mod', 'usb-storage'];
 
-var prototype = {
+module.exports = usbManager({
     attach: function (callback) {
         try {
             STORAGE_DRIVERS.forEach(function (driver) {
@@ -43,6 +43,4 @@ var prototype = {
     cleanupDevice: function (storage) {
         storage.eject();
     }
-};
-
-module.exports = usbManager(prototype);
+});
