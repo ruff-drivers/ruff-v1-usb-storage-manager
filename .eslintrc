@@ -1,3 +1,15 @@
 {
-    "extends": "./node_modules/ruff-standard/eslint-base.json"
+    "env": {
+        "node": true
+    },
+    "extends": "./node_modules/ruff-standard/eslint-base.json",
+    "globals": {
+        "uv": true,
+        "describe": true,
+        "it": true,
+        "before": true,
+        "after": true,
+        "beforeEach": true,
+        "afterEach": true
+    }
 }
