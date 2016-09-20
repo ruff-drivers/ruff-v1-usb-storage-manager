@@ -25,35 +25,28 @@ rap install ruff-v1-usb-storage-manager
 Here is the basic usage of this driver.
 
 ```js
+var fs = require('fs');
+var path = require('path');
 var StorageManager = require('ruff-v1-usb-storage-manager');
 var storageManager = new StorageManager();
 $('#usb').install(storageManager);
 storageManager.on('mount', function (storage) {
     // storage is mounted
 
-    // get the disk and partitions information
-    console.log('The disk information is', storage.disk);
-    console.log('The partitions information is', storage.partitions);
-
-    // get the mounted path of partition with label 'data'
-    var dataPath = storage.getPartitionsByLabel('data')[0].path;
-
-    // read something from `dataPath` or write something to `dataPath`
-    // invoke some `fs` APIs
+    // save data in the storage
+    var filePath = path.join(storage.partitions[0].path, 'test.txt');
+    fs.writeFileSync(filePath, 'hello world\n');
 
     // eject the storage from the system before unplugging the storage
     storage.eject();
 
     // check whether the storage is successfully ejected
-    console.log(storage.isEjected());
-
+    console.log(storage.ejected);
 });
 
 storageManager.on('unmount', function (storage) {
     // storage is unmounted
 
-    // check whether the storage is ejected
-    console.log(storage.isEjected());
 });
 ```
 
@@ -106,6 +99,10 @@ The partitions information, ex.
 ]
 ```
 
+### `ejected`
+
+Return `true` if all of the partitions of the storage are successfully ejected; otherwise, return `false`.
+
 ## methods
 
 ### `getPartitionsByLabel(label)`
@@ -117,10 +114,6 @@ Return an array that contains the partition object with the matched label.
 ### `eject()`
 
 Eject the storage from the system, then the storage can be safely unplugged from the board.
-
-### `isEjected()`
-
-Return `true` if all of the partitions of the storage are successfully ejected; otherwise, return `false`.
 
 ## Contributing
 
