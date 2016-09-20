@@ -27,14 +27,15 @@ Object.defineProperties(Storage.prototype, {
         get: function () {
             return this._blockInfo.partitions;
         }
+    },
+    ejected: {
+        get: function () {
+            return !this._partionsState.some(function (state) {
+                return state === false;
+            });
+        }
     }
 });
-
-Storage.prototype.isEjected = function () {
-    return !this._partionsState.some(function (state) {
-        return state === false;
-    });
-};
 
 Storage.prototype.getPartitionsByLabel = function (label) {
     if (!label) {
