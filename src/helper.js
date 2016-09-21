@@ -14,6 +14,13 @@ var SCRIPT_NAME = 'check_storage.sh';
 
 function getMatchedFolders(path, folderRegExp) {
     var targetFolders = [];
+
+    try {
+        fs.statSync(path);
+    } catch (error) {
+        return null;
+    }
+
     var items = fs.readdirSync(path);
     items.forEach(function (item) {
         if (folderRegExp.exec(item) !== null) {
