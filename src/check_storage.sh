@@ -4,6 +4,7 @@ file=$2
 device="/dev/$1"
 root="/mnt/$1"
 
+touch $file
 blockinfo=$(block info | grep "$device: ")
 if [[ ! -n "$blockinfo" ]]; then
     msg="! block information not found"
@@ -22,7 +23,7 @@ version=$(echo $blockinfo | awk 'match($0, /VERSION="([^"]*)"/) { print substr($
 case "$type" in
     "vfat")
         case "$version" in
-            "FAT12" | "FAT32")
+            "FAT12" | "FAT16" | "FAT32")
                 msg="~ try to mount -t vfat $device $root"
 
                 if [[ ! -e $root ]]; then
