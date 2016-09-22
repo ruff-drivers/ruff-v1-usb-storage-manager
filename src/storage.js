@@ -31,7 +31,7 @@ Object.defineProperties(Storage.prototype, {
     ejected: {
         get: function () {
             return !this._partionsState.some(function (state) {
-                return state === false;
+                return state.removed === false;
             });
         }
     }
@@ -68,6 +68,7 @@ Storage.prototype._unmountPartitions = function () {
                 throw new Error('Cannot umount ' + path + ': Device or resource busy');
             }
         }
+        this._partionsState[i].unmounted = true;
     }
 };
 
