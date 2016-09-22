@@ -30,7 +30,7 @@
       "t": "^0.1.6"
     },
     "dependencies": {
-      "usb-manager": "^0.1.0"
+      "usb-manager": "^0.2.0"
     }
   }
 }
