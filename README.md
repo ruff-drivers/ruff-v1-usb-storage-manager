@@ -1,12 +1,14 @@
 # USB Storage Manager for Ruff
 
-This package manages all of the block storage with USB interfae.
+This package manages all of the block storages with USB interfae.
 
 This package has two parts: one is the storage manager and the other is the driver of storage.
 
 The storage manager supplies the `mount` or `unomut` events when storage is plugged into or unplugged from the system.
 
 The driver of storage supplies some specific functions.
+
+The type of file system of the storage must be `FAT32`.
 
 ## Supported Engines
 
