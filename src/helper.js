@@ -7,6 +7,7 @@
 
 var path = require('path');
 var fs = require('fs');
+var spawnSync = require('child_process').spawnSync;
 var mdelay = require('ruff-driver').mdelay;
 
 var RESULT_FILE = 'result_file';
@@ -57,7 +58,7 @@ function getBlockDevname(devPath) {
     var blockFolderExisted = false;
     var targetSubFolder;
     for (var i = 0; i < targetSubFolders.length; i++) {
-        var blockFolder = getMatchedFolders(path.join(targetxPath, targetSubFolders[i]), /block/);
+        var blockFolder = getMatchedFolders(path.join(targetxPath, targetSubFolders[i]), /^block$/);
         if (blockFolder !== null) {
             targetSubFolder = targetSubFolders[i];
             blockFolderExisted = true;
@@ -90,7 +91,7 @@ function getPartitionsInfo(partitions) {
     var partitionsInfo = [];
 
     partitions.forEach(function (partition) {
-        uv.exec_sync('/bin/sh', [scriptFile, partition, resultFile]);
+        spawnSync('/bin/sh', [scriptFile, partition, resultFile]);
         var partitionInfo = fs.readFileSync(resultFile).toString();
         var info = parsePartitionInfo(partitionInfo);
         if (info) {

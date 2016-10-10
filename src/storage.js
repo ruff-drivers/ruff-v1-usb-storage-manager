@@ -6,6 +6,7 @@
 'use strict';
 
 var fs = require('fs');
+var spawnSync = require('child_process').spawnSync;
 
 function Storage(blockInfo) {
     this._blockInfo = blockInfo;
@@ -63,8 +64,8 @@ Storage.prototype._unmountPartitions = function () {
     for (var i = 0; i < this._blockInfo.partitions.length; i++) {
         var path = this._blockInfo.partitions[i].path;
         if (!this._partionsState[i].unmounted) {
-            var res = uv.exec_sync('/bin/umount', [path]);
-            if (res) {
+            var res = spawnSync('/bin/umount', [path]);
+            if (res.status) {
                 throw new Error('Cannot umount ' + path + ': Device or resource busy');
             }
         }
@@ -88,8 +89,8 @@ Storage.prototype._removeMountPoints = function () {
 };
 
 function checkPartitionUnmounted(mountedPath) {
-    var res = uv.exec_sync('/bin/sh', ['-c', '/bin/df | /bin/grep ' + mountedPath]);
-    return !!res;
+    var res = spawnSync('/bin/sh', ['-c', '/bin/df | /bin/grep ' + mountedPath]);
+    return !!res.status;
 }
 
 module.exports = Storage;
