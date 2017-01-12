@@ -1,6 +1,6 @@
 {
   "name": "ruff-v1-usb-storage-manager",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Manage USB block storages.",
   "author": "Nanchao Inc.",
   "license": "MIT",
@@ -10,7 +10,7 @@
   ],
   "main": "src/index.js",
   "engines": {
-    "ruff": ">=1.6.0 <1.7.0"
+    "ruff": ">=1.6.0 <2.0.0"
   },
   "scripts": {
       "lint": "eslint *.js",

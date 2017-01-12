@@ -12,7 +12,7 @@ The type of file system of the storage must be `FAT32`.
 
 ## Supported Engines
 
-* Ruff: >=1.6.0 <1.7.0
+* Ruff: >=1.6.0 <2.0.0
 
 ## Installing
 
